@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">
+            <span class="brand-icon">₹</span>
+            <span>Personal Expense Tracker</span>
+        </div>
+        <span class="nav-label">Manage your money wisely</span>
+    </nav>
+
+    <main class="container">
+
+        <section class="welcome">
+            <div>
+                <h1>Financial Overview</h1>
+                <p>Track your income, expenses, and savings in one place.</p>
+            </div>
+            <div class="today-date" id="todayDate"></div>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="summary-grid">
+            <div class="summary-card income-card">
+                <div class="card-heading">
+                    <span>Total Income</span>
+                    <span class="card-icon">↗</span>
+                </div>
+                <h2 id="totalIncome">LKR 0.00</h2>
+                <p>Money received</p>
+            </div>
+
+            <div class="summary-card expense-card">
+                <div class="card-heading">
+                    <span>Total Expenses</span>
+                    <span class="card-icon">↘</span>
+                </div>
+                <h2 id="totalExpenses">LKR 0.00</h2>
+                <p>Money spent</p>
+            </div>
+
+            <div class="summary-card balance-card">
+                <div class="card-heading">
+                    <span>Current Balance</span>
+                    <span class="card-icon">₨</span>
+                </div>
+                <h2 id="currentBalance">LKR 0.00</h2>
+                <p>Income minus expenses</p>
+            </div>
+        </section>
+
+        <!-- Transaction form -->
+        <section class="panel">
+            <div class="section-heading">
+                <div>
+                    <h2>Add a Transaction</h2>
+                    <p>Enter the details of your income or expense.</p>
+                </div>
+            </div>
+
+            <form id="transactionForm">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="transactionType">Transaction Type</label>
+                        <select id="transactionType" required>
+                            <option value="Income">Income</option>
+                            <option value="Expense">Expense</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input
+                            type="text"
+                            id="description"
+                            placeholder="e.g. Monthly Allowance"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount (LKR)</label>
+                        <input
+                            type="number"
+                            id="amount"
+                            placeholder="Enter amount"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Allowance">Allowance</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Scholarship">Scholarship</option>
+                            <option value="Food">Food</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Education">Education</option>
+                            <option value="Accommodation">Accommodation</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transactionDate">Date</label>
+                        <input type="date" id="transactionDate" required>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        + Add Transaction
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        Clear Form
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Transaction history -->
+        <section class="panel">
+            <div class="section-heading history-heading">
+                <div>
+                    <h2>Transaction History</h2>
+                    <p>View and manage your recorded transactions.</p>
+                </div>
+                <span class="transaction-count" id="transactionCount">
+                    0 transactions
+                </span>
+            </div>
+
+            <div class="filters">
+                <div class="form-group filter-group">
+                    <label for="transactionFilter">Filter by type</label>
+                    <select id="transactionFilter">
+                        <option value="All">All Transactions</option>
+                        <option value="Income">Income Only</option>
+                        <option value="Expense">Expenses Only</option>
+                    </select>
+                </div>
+
+                <div class="form-group search-group">
+                    <label for="searchInput">Search transactions</label>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search description or category..."
+                    >
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th class="amount-column">Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody">
+                        <!-- JavaScript adds transactions here -->
+                    </tbody>
+                </table>
+
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">₨</div>
+                    <h3>No transactions found</h3>
+                    <p>Add your first transaction to get started.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Personal Expense Tracker &copy; 2026</p>
+            <p>Your transactions are saved in this browser.</p>
+        </footer>
+
+    </main>
+
+    <!-- Popup notification -->
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+    >
+        <span id="toastIcon" class="toast-icon">✓</span>
+        <span id="toastMessage">Transaction completed successfully!</span>
+        <button type="button" id="closeToast" class="toast-close"
+                aria-label="Close notification">&times;</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
